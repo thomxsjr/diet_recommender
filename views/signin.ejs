@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/styles/signin.css">
+    <title>Login</title>
+</head>
+<body>
+    <form class="container login" action="/signin" enctype="application/x-www-form-urlencoded" method="post">
+        <h1>Login</h1>
+        <br>
+        <label for="email">E-Mail</label>
+        <br>
+        <input required type="text" name="email" id="email">
+        <br><br>
+        <label for="password">Password</label>
+        <br>
+        <input required minlength="6" type="password" name="password" id="password">
+        <br><br>
+        <button class="btn btn-primary" id="button" type="submit">Login</button>
+        <br><br><br>
+        <p>Not Registered Yet?</p>
+        <a href="/signup">Sign Up!</a>
+    </form>
+
+    <!-- <script type="module" src="/javascripts/login.js"></script> -->
+</body>
+</html>
