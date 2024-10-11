@@ -5,18 +5,31 @@ const bodyParser = require('body-parser');
 const { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } = require('firebase/auth');
 const ejs = require('ejs');
 const axios = require('axios');
+const { OpenAI } = require('openai');
+
+
 
 const app = express();
-
+require('dotenv').config();
 app.set('view engine', 'ejs')
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public/'))
+app.use(express.json())
 
+
+
+const openai = new OpenAI({
+    organization: "org-WiGJdOITOvxUCoxLtxBPB8pf",
+    project: "proj_0buV1uYDz8tbbYiqo84ZMFDN",
+    apiKey: process.env.OPEN_AI_KEY,
+  });
 const firebaseConfig = require('./firebase_config.js')
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getDatabase(firebaseApp);
 const auth = getAuth(firebaseApp);
+const port = process.env.PORT || 3000;
+
+
 
 app.get('/', async (req, res)=>{
     try {
@@ -42,6 +55,16 @@ app.get('/signup', (req,res)=>{
     res.render('signup')
 });
 
+app.get('/signout', (req, res)=>{
+    signOut(auth)
+    .then(() => {
+        res.redirect('/');
+
+    }).catch((error) => {
+        res.send(error.message)
+      });
+})
+
 app.get('/dashboard/:userID', async (req,res)=>{
     try {
         const dbRef = ref(db);
@@ -62,9 +85,46 @@ app.get('/dashboard/:userID', async (req,res)=>{
     }
 });
 
+app.get('*', (req, res)=>{
+    res.status(404).send('Page Not Found')
+})
 
 
 
+
+app.post('/find-complexity', async (req, res)=>{
+    // try{
+        const prompt = 'Tell me a joke'
+
+        const completions = await openai.chat.completions.create({
+            model: "babbage-002",
+            messages: [
+                { role: "system", content: "You are a helpful assistant." },
+                {
+                    role: "user",
+                    content: prompt,
+                },
+            ],
+            max_tokens: 100,
+            temperature: 1,
+        })
+        
+        // console.log(completions.choices[0].message)
+
+        return res.status(200).json({
+            success: true,
+            data: completions.choices[0].message,
+        })
+    // }catch (error){
+    //     return res.status(400).json({
+    //         success: false,
+    //         error: error.response
+    //           ? error.response.data
+    //           : "There was an issue on the server",
+    //     });
+
+    // }
+})
 
 app.post('/signup',(req,res)=>{
     console.log(req.body);
@@ -130,14 +190,10 @@ app.get('/signout', (req, res)=>{
 
 
 
-app.get('*', (req, res)=>{
-    res.status(404).send('Page Not Found')
-})
-
-app.listen(3000, (err)=>{
+app.listen(port, (err)=>{
     if(!err){
-        console.log('Server initiated at port 3000');
+        console.log(`Server initiated at port ${port}`);
     } else {
         console.error('Error in server listening');
     }
-})
+}) 

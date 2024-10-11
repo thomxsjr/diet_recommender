@@ -2,195 +2,103 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Meal Planner</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .ingredient-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .ingredient-item {
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .ingredient-item:hover {
-            transform: scale(1.05);
-        }
-        .ingredient-item.selected {
-            border-color: #4CAF50;
-            background-color: #e8f5e9;
-        }
-        .ingredient-item img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-        #homePage {
-            display: block;
-        }
-        #finalPage{
-            display: none;
-        }
-        #selectedCount {
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="/styles/dashboard.css">
 </head>
 <body>
-    <div class="container">
-        <!-- <div id="loginPage">
-            <h1>Welcome to Meal Planner</h1>
-            <button onclick="login()">Enter</button>
-        </div> -->
-
-        <div id="homePage">
-            <h1>Select Your Ingredients</h1>
-            <div id="ingredientGrid" class="ingredient-grid"></div>
-            <div id="selectedCount"></div>
-            <button onclick="showFinalPage()">Finish Selection</button>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">D</div>
+                DietBuddy
+            </a>
+            <div class="user-info">
+                <span class="username" onclick="toggleDropdown()">John Doe</span>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <p>Email: johndoe@example.com</p>
+                    <a href="/signout" class="sign-out">Sign Out</a>
+                </div>
+            </div>
         </div>
+    </header>
 
-        <div id="finalPage">
-            <h1>Your Selected Ingredients</h1>
-            <div id="selectedIngredients" class="ingredient-grid"></div>
-            <button onclick="goToHomePage()">Go Back</button>
+    <div class="container">
+        <div class="ingredients-section">
+            <div class="available-ingredients">
+                <div class="header-section">
+                    <h2>Ingredients</h2>
+                    <button class="collapse-btn" id="collapseBtn" onclick="toggleCollapse()">
+                        <span class="icon">▼</span>
+                        Collapse
+                    </button>
+                </div>
+                <input type="text" class="search-box" placeholder="Search ingredients..." onkeyup="filterIngredients()">
+                <ul class="ingredient-list" id="availableList">
+                    <!-- Ingredients will be populated by JavaScript -->
+                </ul>
+                <button class="show-more-btn" id="showMoreBtn" onclick="showMoreIngredients()">Show More Ingredients</button>
+            </div>
+
+            <div class="selected-ingredients">
+                <h2>Selected Ingredients</h2>
+                <ul class="ingredient-list" id="selectedList">
+                    <!-- Selected ingredients will appear here -->
+                </ul>
+            </div>
         </div>
     </div>
 
-    <script>
-        const ingredients = [
-            {name: 'Spinach', image: 'https://d2jx2rerrg6sh3.cloudfront.net/image-handler/picture/2021/9/shutterstock_788468518.jpg'},
-            {name: 'Chicken', image: 'https://static.toiimg.com/thumb/53007558.cms?imgsize=518651&width=800&height=800'},
-            {name: 'Quinoa', image: 'https://nuttyyogi.com/cdn/shop/products/Quinoa_White.jpg?v=1677652891'},
-            {name: 'Sweet Potato', image: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/02/Sweet-potatoes-ca0d8f4.jpg?quality=90&resize=556,505'},
-            {name: 'Avocado', image: 'https://img.imageboss.me/fourwinds/width/425/dpr:2/shop/products/shutterstock_116205556bacon_b59ae0a5-6673-4d99-a9ba-ec6ded5ba99c.jpg?v=1569305453'},
-            {name: 'Broccoli', image: 'https://www.savoryonline.com/app/uploads/recipes/154194/blanched-broccoli-florets-640x640-c-center.jpg'},
-            {name: 'Salmon', image: 'https://www.onceuponachef.com/images/2018/02/pan-seared-salmon-.jpg'},
-            {name: 'Brown Rice', image: 'https://veganfamilykitchen.com/wp-content/uploads/2019/04/how-to-cook-brown-rice-easiest-simplest-healthiest-way-featureimage-1.jpg'},
-            {name: 'Almonds', image: 'https://www.schaer.com/sites/default/files/styles/portrait_sm/public/2022-11/HeaderArticles15073_1917296183.jpg.jpg?itok=RUk9Sx_8'},
-            {name: 'Blueberries', image: 'https://flavdistro.com/cdn/shop/products/Blueberry_0f0730be-525b-4cac-bea5-d85dbb63a77a_1200x1200.jpg?v=1636480507'}
-        ];
-        let selectedIngredients = [];
+    <div class="container">
+        <div class="allergies-section">
+            <div class="available-allergies">
+                <div class="header-section">
+                    <h2>Allergies</h2>
+                    <button class="collapse-btn" id="collapseBtnAllergies" onclick="toggleCollapseAllergies()">
+                        <span class="icon">▼</span>
+                        Collapse
+                    </button>
+                </div>
+                <input type="text" class="search-box-allergies" placeholder="Search Allergies..." onkeyup="filterAllergies()">
+                <ul class="allergy-list" id="availableListAllergies">
+                    <!-- Ingredients will be populated by JavaScript -->
+                </ul>
+                <button class="show-more-btn" id="showMoreBtnAllergies" onclick="showMoreAllergies()">Show More Allergies</button>
+            </div>
 
-        // function login() {
-        //     // const username = document.getElementById('username').value;
-        //     // const password = document.getElementById('password').value;
-        //     // if (username && password) {
-        //         document.getElementById('loginPage').style.display = 'none';
-        //         document.getElementById('homePage').style.display = 'block';
-        //     // } else {
-        //     //     alert('Please enter both username and password');
-        //     // }
-        // }
+            <div class="selected-allergies">
+                <h2>Selected Allergies</h2>
+                <ul class="allergy-list" id="selectedListAllergies">
+                    <!-- Selected ingredients will appear here -->
+                </ul>
+            </div>
+        </div>
+    </div>
 
-        
-        loadIngredients();
+    <div class="container">
+        <div class="cuisines-section">
+            <div class="available-cuisines">
+                <div class="header-section">
+                    <h2>Cuisines</h2>
+                    <button class="collapse-btn" id="collapseBtnCuisines" onclick="toggleCollapseCuisines()">
+                        <span class="icon">▼</span>
+                        Collapse
+                    </button>
+                </div>
+                <input type="text" class="search-box-cuisines" placeholder="Search Cuisines..." onkeyup="filterCuisines()">
+                <ul class="cuisine-list" id="availableListCuisines">
 
-        function loadIngredients() {
-            const ingredientGrid = document.getElementById('ingredientGrid');
-            ingredientGrid.innerHTML = '';
-            ingredients.forEach(ingredient => {
-                const item = document.createElement('div');
-                item.classList.add('ingredient-item');
-                item.innerHTML = `
-                    <img src="${ingredient.image}" alt="${ingredient.name}">
-                    <p>${ingredient.name}</p>
-                `;
-                item.onclick = () => toggleIngredient(ingredient.name, item);
-                ingredientGrid.appendChild(item);
-            });
-            updateSelectedCount();
-        }
+                </ul>
+                <button class="show-more-btn" id="showMoreBtnCuisines" onclick="showMoreCuisines()">Show More Cuisines</button>
+            </div>
 
-        function toggleIngredient(ingredient, element) {
-            const index = selectedIngredients.indexOf(ingredient);
-            if (index > -1) {
-                selectedIngredients.splice(index, 1);
-                element.classList.remove('selected');
-            } else {
-                selectedIngredients.push(ingredient);
-                element.classList.add('selected');
-            }
-            updateSelectedCount();
-        }
+            <div class="selected-cuisines">
+                <h2>Selected Cuisines</h2>
+                <ul class="cuisine-list" id="selectedListCuisines">
 
-        function updateSelectedCount() {
-            const countElement = document.getElementById('selectedCount');
-            countElement.textContent = `Selected: ${selectedIngredients.length} / ${ingredients.length}`;
-        }
+                </ul>
+            </div>
+        </div>
+    </div>
 
-        function showFinalPage() {
-            document.getElementById('homePage').style.display = 'none';
-            document.getElementById('finalPage').style.display = 'block';
-            const selectedGrid = document.getElementById('selectedIngredients');
-            selectedGrid.innerHTML = '';
-            selectedIngredients.forEach(ingredientName => {
-                const ingredient = ingredients.find(i => i.name === ingredientName);
-                const item = document.createElement('div');
-                item.classList.add('ingredient-item');
-                item.innerHTML = `
-                    <img src="${ingredient.image}" alt="${ingredient.name}">
-                    <p>${ingredient.name}</p>
-                `;
-                selectedGrid.appendChild(item);
-            });
-        }
-
-        function goToHomePage() {
-            document.getElementById('finalPage').style.display = 'none';
-            document.getElementById('homePage').style.display = 'block';
-        }
-
-        // Initially show login page
-        // document.getElementById('loginPage').style.display = 'block';
-    </script>
+    <script src="/scripts/dashboard.js"></script>
 </body>
 </html>
