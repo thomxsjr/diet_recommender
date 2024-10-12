@@ -487,10 +487,12 @@ function generateRecipe(){
         xhr.setRequestHeader("Content-type","application/json");
         xhr.onload = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            const response = xhr.responseText.data
-            // console.log(response)
-            const trimmedresponse = response.slice(8, -3);
-            const recipes = JSON.parse(trimmedresponse);
+            const response = xhr.responseText
+            const parsedResponse = JSON.parse(response)
+            const data = parsedResponse.data.content
+            console.log(data)
+            const trimmedData = data.slice(8, -3);
+            const recipes = JSON.parse(trimmedData);
 
             const container = document.getElementById('recipeContainer');
             recipes.forEach(recipe => {
@@ -511,7 +513,7 @@ function createRecipeCard(recipe) {
     card.className = 'recipe';
 
     const title = document.createElement('h2');
-    title.textContent = recipe["dish name"];
+    title.textContent = recipe["dish_name"];
     card.appendChild(title);
 
     const itemsList = document.createElement('ul');

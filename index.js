@@ -121,7 +121,7 @@ app.post('/generate-recipe', async (req, res)=>{
             messages: [
                 {
                     role: "user",
-                    content: `${prompt} create a json with parameters: 'dish name', 'items', 'procedure'. give 3 dishes. only code no other text.`,
+                    content: `${prompt} create a json with parameters: 'dish_name', 'items', 'procedure'. give 3 dishes. only code no other text.`,
                 },
             ],
             max_tokens: 1000,
@@ -130,7 +130,7 @@ app.post('/generate-recipe', async (req, res)=>{
         
 
         return res.status(200).json({
-            success: prompt,
+            success: true,
             data: completions.choices[0].message,
         })
     }catch (error){
