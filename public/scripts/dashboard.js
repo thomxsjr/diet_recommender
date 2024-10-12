@@ -19,11 +19,65 @@ window.onclick = function(event) {
 
  // Previous JavaScript content remains exactly the same
  const ingredients = [
-    'Chicken Breast', 'Salmon', 'Spinach', 'Broccoli', 'Sweet Potato',
-    'Quinoa', 'Brown Rice', 'Eggs', 'Greek Yogurt', 'Avocado',
-    'Almonds', 'Olive Oil', 'Banana', 'Blueberries', 'Oats',
-    'Cottage Cheese', 'Kale', 'Lentils', 'Black Beans', 'Tofu',
-    'Turkey', 'Tuna', 'Chickpeas', 'Bell Peppers', 'Chia Seeds'
+    // Vegetables
+    "Tomato", "Potato", "Carrot", "Broccoli", "Spinach", "Kale", "Zucchini", "Cucumber", "Bell Pepper", 
+    "Onion", "Garlic", "Ginger", "Lettuce", "Eggplant", "Cauliflower", "Asparagus", "Sweet Potato", 
+    "Brussels Sprouts", "Green Beans", "Peas", "Cabbage", "Radish", "Beetroot", "Leek", "Turnip",
+
+    // Fruits
+    "Apple", "Banana", "Orange", "Strawberry", "Blueberry", "Grapes", "Mango", "Pineapple", "Watermelon",
+    "Papaya", "Avocado", "Peach", "Plum", "Cherry", "Kiwi", "Pear", "Pomegranate", "Raspberry", "Blackberry",
+    "Lemon", "Lime", "Coconut", "Dragon Fruit", "Passion Fruit", "Guava",
+
+    // Grains and Legumes
+    "Rice", "Wheat", "Barley", "Oats", "Quinoa", "Millet", "Chickpeas", "Lentils", "Black Beans", 
+    "Kidney Beans", "Peas", "Soybeans", "Lupin Beans", "Adzuki Beans", "Buckwheat", "Corn", "Amaranth",
+
+    // Dairy Products
+    "Milk", "Cheese", "Yogurt", "Butter", "Cream", "Ghee", "Cottage Cheese", "Buttermilk", "Sour Cream",
+    "Mozzarella", "Cheddar", "Feta", "Goat Cheese", "Parmesan", "Ricotta", "Swiss Cheese",
+
+    // Meat and Poultry
+    "Chicken", "Beef", "Pork", "Lamb", "Turkey", "Duck", "Bacon", "Ham", "Sausage", "Venison", 
+    "Rabbit", "Goat", "Veal", "Quail", "Pheasant",
+
+    // Fish and Seafood
+    "Salmon", "Tuna", "Cod", "Shrimp", "Prawns", "Crab", "Lobster", "Oysters", "Clams", "Mussels", 
+    "Sardines", "Anchovies", "Mackerel", "Tilapia", "Octopus", "Squid", "Sea Bass", "Trout",
+
+    // Nuts and Seeds
+    "Almonds", "Cashews", "Walnuts", "Pistachios", "Macadamia", "Sunflower Seeds", "Pumpkin Seeds", 
+    "Chia Seeds", "Flax Seeds", "Sesame Seeds", "Hemp Seeds", "Brazil Nuts", "Pine Nuts", "Pecans", 
+
+    // Oils and Fats
+    "Olive Oil", "Coconut Oil", "Vegetable Oil", "Sunflower Oil", "Sesame Oil", "Peanut Oil", "Canola Oil", 
+    "Avocado Oil", "Butter", "Ghee", "Lard", "Palm Oil",
+
+    // Herbs and Spices
+    "Basil", "Oregano", "Thyme", "Rosemary", "Parsley", "Cilantro", "Dill", "Mint", "Sage", 
+    "Chives", "Tarragon", "Bay Leaves", "Cinnamon", "Nutmeg", "Cumin", "Coriander", "Turmeric", 
+    "Paprika", "Black Pepper", "Cayenne Pepper", "Chili Powder", "Garam Masala", "Saffron", "Cardamom",
+    "Fenugreek", "Mustard Seeds", "Fennel Seeds", "Caraway Seeds",
+
+    // Sauces and Condiments
+    "Ketchup", "Mustard", "Mayonnaise", "Soy Sauce", "Hot Sauce", "Barbecue Sauce", "Worcestershire Sauce", 
+    "Vinegar", "Tahini", "Horseradish", "Sriracha", "Pesto", "Hummus", "Fish Sauce", "Oyster Sauce", "Tartar Sauce",
+
+    // Sweeteners
+    "Sugar", "Brown Sugar", "Honey", "Maple Syrup", "Molasses", "Agave Syrup", "Stevia", "Coconut Sugar", 
+    "Date Syrup", "Corn Syrup", "Golden Syrup",
+
+    // Baking Ingredients
+    "Flour", "Baking Powder", "Baking Soda", "Yeast", "Cornstarch", "Gelatin", "Agar Agar", "Vanilla Extract", 
+    "Cocoa Powder", "Chocolate Chips", "Brown Sugar", "Powdered Sugar", "Salt",
+
+    // Beverages
+    "Tea", "Coffee", "Juice", "Soda", "Milk", "Water", "Lemonade", "Smoothie", "Beer", "Wine", "Cider", 
+    "Hot Chocolate",
+
+    // Other
+    "Tofu", "Tempeh", "Seitan", "Miso", "Soy Sauce", "Sriracha", "Kimchi", "Sauerkraut", "Pickles", 
+    "Olives", "Capers", "Nori", "Mushrooms", "Truffles"
 ];
 
 const selectedIngredients = new Set();
@@ -149,9 +203,84 @@ function filterIngredients() {
 
 
 const allergies = [
-    "peanuts","shellfish","dairy","gluten","eggs","soy","wheat","tree nuts","fish",
-"sesame","mustard","corn","bee stings","latex","pollen","dust mites","animal dander",
-    "mold","certain medications","perfumes/fragrances"
+    // Common Allergies
+    "Peanuts", "Tree Nuts", "Milk", "Eggs", "Fish", "Shellfish", "Wheat", "Soy", "Sesame",
+
+    // Tree Nut Specific Allergies
+    "Almonds", "Cashews", "Walnuts", "Hazelnuts", "Macadamia Nuts", "Pistachios", "Brazil Nuts", 
+    "Pecans", "Pine Nuts",
+
+    // Fish Specific Allergies
+    "Salmon", "Tuna", "Cod", "Haddock", "Trout", "Mackerel", "Swordfish", "Anchovies", 
+    "Sardines", "Bass",
+
+    // Shellfish Specific Allergies
+    "Shrimp", "Crab", "Lobster", "Clams", "Oysters", "Mussels", "Scallops", "Prawns", 
+    "Crawfish",
+
+    // Grains and Gluten Allergies
+    "Wheat", "Barley", "Rye", "Oats", "Spelt", "Kamut", "Triticale", "Semolina", 
+    "Durum Wheat", "Gluten",
+
+    // Fruit Allergies
+    "Apple", "Peach", "Cherry", "Strawberry", "Kiwi", "Banana", "Avocado", "Mango", 
+    "Pineapple", "Grapes", "Watermelon", "Cantaloupe", "Papaya",
+
+    // Vegetable Allergies
+    "Tomato", "Potato", "Carrot", "Celery", "Spinach", "Cucumber", "Zucchini", "Peppers", 
+    "Lettuce", "Garlic", "Onion", "Pumpkin", "Eggplant",
+
+    // Legume Allergies
+    "Soy", "Lentils", "Chickpeas", "Peas", "Kidney Beans", "Black Beans", "Lupin Beans", 
+    "Green Beans", "Peanuts", 
+
+    // Seed Allergies
+    "Sesame", "Sunflower Seeds", "Poppy Seeds", "Pumpkin Seeds", "Flax Seeds", "Chia Seeds", 
+    "Hemp Seeds", "Mustard Seeds", 
+
+    // Dairy Allergies
+    "Cow’s Milk", "Goat’s Milk", "Sheep’s Milk", "Lactose", "Casein", "Whey Protein",
+
+    // Meat and Poultry Allergies
+    "Chicken", "Beef", "Pork", "Lamb", "Turkey", "Duck", "Rabbit", "Goat", 
+    "Venison", "Quail", "Horse Meat", 
+
+    // Spice Allergies
+    "Coriander", "Cumin", "Turmeric", "Paprika", "Cinnamon", "Nutmeg", "Black Pepper", 
+    "Saffron", "Ginger", "Garlic", "Mustard", "Fennel", "Cardamom", 
+
+    // Rare Allergies
+    "Corn", "Rice", "Gelatin", "Coconut", "Chocolate", "Vanilla", "Honey", 
+    "Aspartame", "MSG (Monosodium Glutamate)", "Balsam of Peru", "Food Colorings (e.g., Red 40)", 
+    "Sulfites", "Benzoates", "Tartrazine (Yellow 5)", "Shellac", 
+
+    // Cross-Reactive Allergies (Oral Allergy Syndrome)
+    "Birch Pollen (cross-reacts with apples, carrots, celery, peaches)", 
+    "Ragweed Pollen (cross-reacts with bananas, melons)", 
+    "Grass Pollen (cross-reacts with tomatoes, potatoes, peaches)",
+
+    // Additives and Preservative Allergies
+    "Sulfites", "Benzoates", "Nitrates", "Nitrites", "Tartrazine (Yellow 5)", 
+    "Carmine", "Aspartame", "MSG (Monosodium Glutamate)", 
+
+    // Other Specific Ingredients
+    "Gluten", "Lactose", "Casein", "Egg Whites", "Egg Yolks", "Yeast", 
+    "Glycerin", "Maltodextrin", "Corn Starch", "Soy Lecithin", 
+
+    // Alcohol and Fermented Product Allergies
+    "Wine", "Beer", "Spirits", "Sake", "Vinegar", "Pickles", 
+    "Kombucha", "Sauerkraut", "Miso", "Kimchi", "Tempeh",
+
+    // Uncommon Plant Allergies
+    "Cocoa", "Tea", "Coffee", "Herbs like Basil, Oregano, Parsley", "Spinach", "Rhubarb", "Artichoke",
+
+    // Animal Protein Allergies
+    "Gelatin", "Albumin", "Fish Protein", "Chicken Protein", "Meat Protein", 
+
+    // Miscellaneous Allergies
+    "Chia Seeds", "Pineapple Enzymes (Bromelain)", "Latex-Fruit Syndrome (Banana, Avocado, Kiwi)", 
+    "Salicylates", "Lupin", "Carrageenan", "Pectin", "Quorn (Mycoprotein)",
+    "Alpha-gal (linked to red meat from tick bites)"
 ];
 
 const selectedAllergies = new Set();
@@ -419,51 +548,6 @@ initializeCuisines();
 //recipe-section
 
 
-const recipes = [
-    {
-        "dish name": "Stir-fried Chicken with Capsicum",
-        "items": {
-            "chicken": "200g, sliced",
-            "coriander": "fresh, chopped",
-            "potato": "1 medium, diced and boiled",
-            "garam masala": "1 tsp",
-            "onions": "1 medium, thinly sliced",
-            "turmeric powder": "1/2 tsp",
-            "capsicum": "1 large, sliced",
-            "oil": "2 tbsp",
-            "salt": "to taste"
-        },
-        "procedure": "1. Heat oil in a wok and sauté onions until soft. 2. Add chicken slices and stir-fry until browned. 3. Add turmeric, garam masala, and salt. Stir well. 4. Add boiled potatoes and capsicum. Stir-fry for 5-7 minutes. 5. Garnish with fresh coriander and serve hot."
-    },
-    {
-        "dish name": "Capsicum and Potato Stir-fry",
-        "items": {
-            "potato": "2 medium, diced and boiled",
-            "coriander": "fresh, chopped",
-            "garam masala": "1 tsp",
-            "onions": "1 large, thinly sliced",
-            "turmeric powder": "1/2 tsp",
-            "capsicum": "2 large, sliced",
-            "oil": "2 tbsp",
-            "salt": "to taste"
-        },
-        "procedure": "1. Heat oil in a wok and sauté onions until translucent. 2. Add turmeric powder, garam masala, and salt. Mix well. 3. Add boiled potatoes and sliced capsicum. Stir-fry on high heat for 5 minutes. 4. Garnish with fresh coriander and serve immediately."
-    },
-    {
-        "dish name": "Chicken and Capsicum Stir-fry",
-        "items": {
-            "chicken": "250g, sliced",
-            "capsicum": "2 medium, sliced",
-            "onions": "2 medium, sliced",
-            "garam masala": "1 tsp",
-            "turmeric powder": "1/2 tsp",
-            "coriander": "fresh, chopped",
-            "oil": "2 tbsp",
-            "salt": "to taste"
-        },
-        "procedure": "1. Heat oil in a wok and fry onions until soft. 2. Add chicken and stir-fry until fully cooked. 3. Add turmeric, garam masala, and salt. Stir well. 4. Add sliced capsicum and stir-fry for 5-7 minutes. 5. Garnish with coriander and serve hot."
-    }
-];
 
 function generateRecipe(){
 
