@@ -18,52 +18,10 @@ window.onclick = function(event) {
 }
 
 
-const recipes = [
-    {
-        "dish name": "Stir-fried Chicken with Capsicum",
-        "items": {
-            "chicken": "200g, sliced",
-            "coriander": "fresh, chopped",
-            "potato": "1 medium, diced and boiled",
-            "garam masala": "1 tsp",
-            "onions": "1 medium, thinly sliced",
-            "turmeric powder": "1/2 tsp",
-            "capsicum": "1 large, sliced",
-            "oil": "2 tbsp",
-            "salt": "to taste"
-        },
-        "procedure": "1. Heat oil in a wok and sauté onions until soft. 2. Add chicken slices and stir-fry until browned. 3. Add turmeric, garam masala, and salt. Stir well. 4. Add boiled potatoes and capsicum. Stir-fry for 5-7 minutes. 5. Garnish with fresh coriander and serve hot."
-    },
-    {
-        "dish name": "Capsicum and Potato Stir-fry",
-        "items": {
-            "potato": "2 medium, diced and boiled",
-            "coriander": "fresh, chopped",
-            "garam masala": "1 tsp",
-            "onions": "1 large, thinly sliced",
-            "turmeric powder": "1/2 tsp",
-            "capsicum": "2 large, sliced",
-            "oil": "2 tbsp",
-            "salt": "to taste"
-        },
-        "procedure": "1. Heat oil in a wok and sauté onions until translucent. 2. Add turmeric powder, garam masala, and salt. Mix well. 3. Add boiled potatoes and sliced capsicum. Stir-fry on high heat for 5 minutes. 4. Garnish with fresh coriander and serve immediately."
-    },
-    {
-        "dish name": "Chicken and Capsicum Stir-fry",
-        "items": {
-            "chicken": "250g, sliced",
-            "capsicum": "2 medium, sliced",
-            "onions": "2 medium, sliced",
-            "garam masala": "1 tsp",
-            "turmeric powder": "1/2 tsp",
-            "coriander": "fresh, chopped",
-            "oil": "2 tbsp",
-            "salt": "to taste"
-        },
-        "procedure": "1. Heat oil in a wok and fry onions until soft. 2. Add chicken and stir-fry until fully cooked. 3. Add turmeric, garam masala, and salt. Stir well. 4. Add sliced capsicum and stir-fry for 5-7 minutes. 5. Garnish with coriander and serve hot."
-    }
-];
-
+const jsonString = "```json\n[\n    {\n        \"dish name\": \"Sweet Potato Chicken Stir Fry\",\n        \"items\": [\n            \"1 large chicken breast, thinly sliced\",\n            \"2 cups spinach, washed and trimmed\",\n            \"1 large sweet potato, peeled and cut into small cubes\",\n            \"2 tablespoons soy sauce\",\n            \"1 tablespoon oyster sauce\",\n            \"2 cloves garlic, minced\",\n            \"1 tablespoon ginger, minced\",\n            \"2 tablespoons vegetable oil\",\n            \"1 teaspoon sesame oil\",\n            \"Salt and pepper to taste\"\n        ],\n        \"procedure\": [\n            \"Heat vegetable oil in a large skillet over medium-high heat.\",\n            \"Add the minced garlic and ginger, sauté for 1 minute until fragrant.\",\n            \"Add the sliced chicken breast and stir fry until it is nearly cooked through, about 5-6 minutes.\",\n            \"Incorporate the sweet potato cubes, cook for about 8 minutes or until they begin to soften.\",\n            \"Toss the spinach into the skillet and stir until it wilts.\",\n            \"Drizzle with soy sauce, oyster sauce, and sesame oil. Stir everything together and cook for additional 2 minutes.\",\n            \"Season with salt and pepper to taste.\",\n            \"Serve hot.\"\n        ]\n    },\n    {\n        \"dish name\": \"Spinach and Sweet Potato Noodles with Chicken\",\n        \"items\": [\n            \"1 large chicken breast, cut into strips\",\n            \"2 cups spinach\",\n            \"1 sweet potato, spiralized into noodles\",\n            \"2 tablespoons hoisin sauce\",\n            \"1 tablespoon soy sauce\",\n            \"2 teaspoons chili sauce (optional)\",\n            \"2 cloves garlic, minced\",\n            \"1 tablespoon ginger, minced\",\n            \"1 tablespoon peanut oil (or any other cooking oil if allergic to peanuts)\",\n            \"Salt to taste\",\n            \"Sesame seeds for garnish\"\n        ],\n        \"procedure\": [\n            \"Heat the oil in a large pan over medium heat.\",\n            \"Add garlic and ginger to the pan and sauté until fragrant.\",\n            \"Add chicken strips and cook until they turn golden and are cooked through.\",\n            \"Toss in the spiralized sweet potato noodles and cook for about 3-4 minutes, until just tender.\",\n            \"Add the spinach and cook until wilted.\",\n            \"Pour in the hoisin sauce, soy sauce, and chili sauce, mixing well to coat all ingredients.\",\n            \"Cook for an additional 2 minutes, letting the flavors blend together.\",\n            \"Season with salt, garnish with sesame seeds, and serve.\"\n        ]\n    },\n    {\n        \"dish name\": \"Chinese Spiced Chicken with Sweet Potato\",\n        \"items\": [\n            \"1 large chicken breast, thinly sliced\",\n            \"1 large sweet potato, peeled and diced\",\n            \"2 cups spinach\",\n            \"2 tablespoons Chinese five-spice powder\",\n            \"1 tablespoon soy sauce\",\n            \"2 tablespoons vegetable oil\",\n            \"1 teaspoon honey\",\n            \"1 tablespoon rice vinegar\",\n            \"Salt and pepper to taste\"\n        ],\n        \"procedure\": [\n            \"Heat oil in a large skillet over medium-high heat.\",\n            \"Add the sliced chicken breast and Chinese five-spice powder, stir to coat well.\",\n            \"Cook the chicken until it begins to brown, about 5-7 minutes.\",\n            \"Add the diced sweet potato and cook for about 10 minutes or until soft.\",\n            \"Mix in the spinach and cook until wilted.\",\n            \"Stir in soy sauce, honey, and rice vinegar, and cook for another 2-3 minutes until everything is well combined and heated through.\",\n            \"Season with salt and pepper to taste.\",\n            \"Serve immediately.\"\n        ]\n    }\n]\n```"
+const trimmedjsonString = jsonString.slice(8, -3);
+console.log(trimmedjsonString)
+const recipes = JSON.parse(trimmedjsonString);
 function createRecipeCard(recipe) {
     const card = document.createElement('div');
     card.className = 'recipe';

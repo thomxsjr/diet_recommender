@@ -466,10 +466,43 @@ const recipes = [
 ];
 
 function generateRecipe(){
-    const container = document.getElementById('recipeContainer');
-    recipes.forEach(recipe => {
-        container.appendChild(createRecipeCard(recipe));
-    });
+
+
+    if (selectedIngredients.size < 3){
+        alert('Select Atleast 3 Ingredients')
+    } else if (selectedCuisines.size == 0){
+        alert('Select Any Cuisine')
+    } else {
+        let selectedAllergiesStr = 'none'
+        if (selectedAllergies.size > 0){
+            selectedAllergiesStr = Array.from(selectedAllergies).join(', ')
+        }
+        const selectedCuisinesStr = Array.from(selectedCuisines).join(', ')
+        const selectedIngredientsStr = Array.from(selectedIngredients).join(', ')
+        const data = {messege: `ingredients: ${selectedIngredientsStr}. allergies: ${selectedAllergiesStr}. cuisine: ${selectedCuisinesStr}. create a json with parameters: 'dish name', 'items', 'procedure'. only code and no other text. give 3 dishes.`}
+        const body = JSON.stringify(data)
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:3000/generate-recipe", true);
+        xhr.setRequestHeader("Content-type","application/json");
+        xhr.onload = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            const response = xhr.responseText.data
+            // console.log(response)
+            const trimmedresponse = response.slice(8, -3);
+            const recipes = JSON.parse(trimmedresponse);
+
+            const container = document.getElementById('recipeContainer');
+            recipes.forEach(recipe => {
+                container.appendChild(createRecipeCard(recipe));
+            });
+        } else {
+            console.log(`Error: ${xhr.status}`);
+        }
+        };
+        xhr.send(body);
+    }
+    
 }
 
 

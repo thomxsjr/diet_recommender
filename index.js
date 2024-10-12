@@ -112,27 +112,25 @@ app.get('*', (req, res)=>{
 
 
 
-app.post('/find-complexity', async (req, res)=>{
+app.post('/generate-recipe', async (req, res)=>{
     try{
-        const prompt = 'Tell me a joke'
+        const prompt = req.body.messege
 
         const completions = await openai.chat.completions.create({
-            model: "fgpt-3.5-turbo",
+            model: "gpt-4-turbo-2024-04-09",
             messages: [
-                { role: "system", content: "You are a helpful assistant." },
                 {
                     role: "user",
-                    content: prompt,
+                    content: `${prompt} create a json with parameters: 'dish name', 'items', 'procedure'. give 3 dishes. only code no other text.`,
                 },
             ],
-            max_tokens: 100,
+            max_tokens: 1000,
             temperature: 1,
         })
         
-        // console.log(completions.choices[0].message)
 
         return res.status(200).json({
-            success: true,
+            success: prompt,
             data: completions.choices[0].message,
         })
     }catch (error){
