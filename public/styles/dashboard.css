@@ -19,7 +19,6 @@ body {
 }
 
 .header-content {
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
     display: flex;
@@ -108,9 +107,25 @@ body {
     
 
 .container {
-    max-width: 800px;
+    max-width: 1800px;
     margin: 20px auto;
     padding: 20px;
+}
+
+.link_container{
+    margin: 0px 40px;
+}
+.link{
+    margin: 0px 20px;
+    color: #2c3e50;
+    font-weight: bold;
+    text-decoration: none;
+}
+.link:active{
+    color: #007bff;
+}
+.link:hover{
+    color: #007bff;
 }
 
 .cuisines-section, .allergies-section, .ingredients-section {
@@ -254,11 +269,77 @@ h2 {
     transform: rotate(-180deg);
 }
 
+.generate-btn {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.generate-btn:hover {
+    background-color: #0056b3;
+}
+
+
+.recipe-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.recipe {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+    width: calc(33.33% - 20px);
+    min-width: 300px;
+}
+
+h2 {
+    color: #333;
+    margin-top: 0;
+}
+ul {
+    padding-left: 20px;
+}
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+.recipe-btn {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 8px 12px;
+}
+.recipe-btn:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
+    .recipe {
+        width: 100%;
+    }
+}
 @media (max-width: 600px) {
-    .ingredients-section {
+    .ingredients-section, .allergies-section, .cuisines-section {
         flex-direction: column;
     }
-    .ingredient-list {
+    .ingredient-list, .allergies-list, .cuisines-list {
         grid-template-columns: 1fr;
     }
 }

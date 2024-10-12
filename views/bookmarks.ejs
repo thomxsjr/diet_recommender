@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarks</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link rel="stylesheet" href="/styles/bookmarks.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="#" class="logo">
+                <div class="logo-icon">D</div>
+                DietBuddy
+            </a>
+            <div class="link_container">
+                <a href="/dashboard/<%= locals.uid %>" class="link">
+                    Home
+                </a>
+                <a href="#" class="link">
+                    Bookmarks
+                </a>
+            </div>
+            <div class="user-info">
+                <span class="username" onclick="toggleDropdown()"><%= locals.user_data.username %></span>
+                <div class="dropdown-menu" id="user-dropdown">
+                    <p>Email: <%= locals.user_data.email %></p>
+                    <a href="/signout" class="sign-out">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="recipe-container" id="recipeContainer"></div>
+
+    <script src="/scripts/bookmarks.js"></script>
+</body>
+</html>

@@ -20,7 +20,7 @@ app.use(express.json())
 
 const openai = new OpenAI({
     organization: "org-WiGJdOITOvxUCoxLtxBPB8pf",
-    project: "proj_0buV1uYDz8tbbYiqo84ZMFDN",
+    project: "proj_E5kuFZY4XEqbcK2Tvy9lsPlI",
     apiKey: process.env.OPEN_AI_KEY,
   });
 const firebaseConfig = require('./firebase_config.js')
@@ -72,7 +72,27 @@ app.get('/dashboard/:userID', async (req,res)=>{
         const user_data = data.val()
         onAuthStateChanged(auth, function(user) {
             if (user) {
-                res.render('dashboard', {user_data:user_data});
+                res.render('dashboard', {user_data:user_data, uid:req.params.userID});
+            } else {
+                res.redirect('/signin');
+            }
+          });
+        
+    } catch (err) {
+        console.log(err);
+        console.log(error.message)
+        res.status(501).redirect('/');
+    }
+});
+
+app.get('/bookmarks/:userID', async (req,res)=>{
+    try {
+        const dbRef = ref(db);
+        const data = await get(child(dbRef, `users/${req.params.userID}`));
+        const user_data = data.val()
+        onAuthStateChanged(auth, function(user) {
+            if (user) {
+                res.render('bookmarks', {user_data:user_data, uid:req.params.userID});
             } else {
                 res.redirect('/signin');
             }
@@ -93,11 +113,11 @@ app.get('*', (req, res)=>{
 
 
 app.post('/find-complexity', async (req, res)=>{
-    // try{
+    try{
         const prompt = 'Tell me a joke'
 
         const completions = await openai.chat.completions.create({
-            model: "babbage-002",
+            model: "fgpt-3.5-turbo",
             messages: [
                 { role: "system", content: "You are a helpful assistant." },
                 {
@@ -115,15 +135,15 @@ app.post('/find-complexity', async (req, res)=>{
             success: true,
             data: completions.choices[0].message,
         })
-    // }catch (error){
-    //     return res.status(400).json({
-    //         success: false,
-    //         error: error.response
-    //           ? error.response.data
-    //           : "There was an issue on the server",
-    //     });
+    }catch (error){
+        return res.status(400).json({
+            success: false,
+            error: error.response
+              ? error.response.data
+              : "There was an issue on the server",
+        });
 
-    // }
+    }
 })
 
 app.post('/signup',(req,res)=>{
