@@ -10,7 +10,7 @@ const { OpenAI } = require('openai');
 
 
 const app = express();
-require('dotenv').config();
+// require('dotenv').config();
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public/'))
