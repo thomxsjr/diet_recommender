@@ -567,7 +567,7 @@ function generateRecipe(){
         const body = JSON.stringify(data)
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:3000/generate-recipe", true);
+        xhr.open("POST", "https://dietbuddy-zp0g.onrender.com/generate-recipe", true);
         xhr.setRequestHeader("Content-type","application/json");
         xhr.onload = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
