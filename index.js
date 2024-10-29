@@ -1,5 +1,5 @@
 const express = require('express');
-const { getDatabase, set, ref,update,get, child } = require('firebase/database');
+const { getDatabase, set, ref, update, get, child } = require('firebase/database');
 const { initializeApp } = require('firebase/app')
 const bodyParser = require('body-parser');
 const { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } = require('firebase/auth');
@@ -10,7 +10,7 @@ const { OpenAI } = require('openai');
 
 
 const app = express();
-// require('dotenv').config();
+require('dotenv').config();
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static(__dirname+'/public/'))
@@ -105,6 +105,17 @@ app.get('/bookmarks/:userID', async (req,res)=>{
     }
 });
 
+app.get('/data/:userID', async (req,res)=>{
+    try {
+        const dbRef = ref(db);
+        const data = await get(child(dbRef, `users/${req.params.userID}`));
+        const user_data = data.val()
+        res.status(200).json({user_data : user_data});
+    } catch(err) {
+        res.status(500).json({res:false});
+    }
+});
+
 app.get('*', (req, res)=>{
     res.status(404).send('Page Not Found')
 })
@@ -114,14 +125,30 @@ app.get('*', (req, res)=>{
 
 app.post('/generate-recipe', async (req, res)=>{
     try{
-        const prompt = req.body.messege
+        const selectedList = req.body.messege
+        const ingredients = selectedList.ingredients.toString();
+        const allergies = selectedList.allergies.toString();
+        const cuisines = selectedList.cuisine.toString();
+        const data = `ingredients: ${ingredients}. allergies: ${allergies}. cuisine: ${cuisines}.`
+
+        onAuthStateChanged(auth, function(user) {
+            const userID = user.uid;
+            
+            var post_data = {
+                selectedList : {selectIngredients:ingredients, selectAllergies:allergies, selectCuisines:cuisines}
+            }
+            console.log(post_data)
+            update(ref(db, 'users/' + userID), post_data)
+          });
+        
+
 
         const completions = await openai.chat.completions.create({
             model: "gpt-4-turbo-2024-04-09",
             messages: [
                 {
                     role: "user",
-                    content: `${prompt} create a json with parameters: 'dish_name', 'items', 'procedure'. give 3 dishes. only code no other text.`,
+                    content: `${data} create a json with parameters: 'dish_name', 'items', 'procedure'. give 3 dishes. only code no other text.`,
                 },
             ],
             max_tokens: 1000,
@@ -131,6 +158,7 @@ app.post('/generate-recipe', async (req, res)=>{
 
         return res.status(200).json({
             success: true,
+            // data: cuisines
             data: completions.choices[0].message,
         })
     }catch (error){
@@ -142,6 +170,10 @@ app.post('/generate-recipe', async (req, res)=>{
         });
 
     }
+})
+
+app.post('/ingredient-recognisation', (req, res)=>{
+    
 })
 
 app.post('/signup',(req,res)=>{
@@ -159,7 +191,10 @@ app.post('/signup',(req,res)=>{
             gender : req.body.gender,
             age : req.body.age,
             last_login: Date.now(),
-            
+            selectedList : {
+                selectIngredients: '',
+                selectAllergies: '',
+                selectCuisines: ''}
         };
 
 

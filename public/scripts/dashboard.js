@@ -7,7 +7,6 @@ function toggleDropdown() {
     }
 }
 
-// Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
     if (!event.target.matches('.username')) {
         var dropdown = document.getElementById("user-dropdown");
@@ -17,7 +16,31 @@ window.onclick = function(event) {
     }
 }
 
- // Previous JavaScript content remains exactly the same
+
+
+
+
+// let savedIngredientsStr = ''
+// for (let x in person){
+//     savedIngredientsStr = savedIngredients[x] + "";
+// }
+// let savedAllergiesStr = ''
+// for (let x in person){
+//     if (savedAllergies[x] == "none"){
+//         break
+//     } else {
+//         savedAllergiesStr = savedAllergies[x] + "";
+//     }
+// }
+// let savedCuisinesStr = ''
+// for (let x in person){
+//     savedCuisinesStr = savedCuisines[x] + "";
+// }
+
+// const savedIngredientsArray = savedIngredientsStr.split(" ")
+// const savedAllergiesArray = savedAllergiesStr.split(" ")
+// const savedCuisinesArray = savedCuisinesStr.split(" ")
+
  const ingredients = [
     // Vegetables
     "Tomato", "Potato", "Carrot", "Broccoli", "Spinach", "Kale", "Zucchini", "Cucumber", "Bell Pepper", 
@@ -81,6 +104,7 @@ window.onclick = function(event) {
 ];
 
 const selectedIngredients = new Set();
+
 let visibleIngredients = 10;
 let isCollapsed = false;
 
@@ -112,6 +136,7 @@ function initializeIngredients() {
         const li = createIngredientItem(ingredient);
         availableList.appendChild(li);
     });
+
 
     updateShowMoreButton();
 }
@@ -239,7 +264,7 @@ const allergies = [
     "Hemp Seeds", "Mustard Seeds", 
 
     // Dairy Allergies
-    "Cow’s Milk", "Goat’s Milk", "Sheep’s Milk", "Lactose", "Casein", "Whey Protein",
+    "Cow's Milk", "Goat's Milk", "Sheep's Milk", "Lactose", "Casein", "Whey Protein",
 
     // Meat and Poultry Allergies
     "Chicken", "Beef", "Pork", "Lamb", "Turkey", "Duck", "Rabbit", "Goat", 
@@ -310,6 +335,7 @@ function toggleCollapseAllergies() {
 function initializeAllergies() {
     const availableListAllergies = document.getElementById('availableListAllergies');
     availableListAllergies.innerHTML = '';
+
     
     allergies.slice(0, visibleAllergies).forEach(allergy => {
         const li = createAllergyItem(allergy);
@@ -435,6 +461,7 @@ function toggleCollapseCuisines() {
 function initializeCuisines() {
     const availableListCuisines = document.getElementById('availableListCuisines');
     availableListCuisines.innerHTML = '';
+
     
     cuisines.slice(0, visibleCuisines).forEach(cuisine => {
         const li = createCuisineItem(cuisine);
@@ -471,12 +498,6 @@ function createCuisineItem(cuisine) {
 }
 
 function selectCuisine(cuisine) {
-
-    // if (!selectedCuisines.has(cuisine)) {
-    //     selectedCuisines.add(cuisine);
-    //     updateSelectedListCuisines();
-    // }
-
     if(selectedCuisines.size == 0){
         selectedCuisines.add(cuisine);
         updateSelectedListCuisines();
@@ -557,23 +578,26 @@ function generateRecipe(){
     } else if (selectedCuisines.size == 0){
         alert('Select Any Cuisine')
     } else {
-        let selectedAllergiesStr = 'none'
+        let selectedAllergiesArray = 'none'
         if (selectedAllergies.size > 0){
-            selectedAllergiesStr = Array.from(selectedAllergies).join(', ')
+            selectedAllergiesArray = Array.from(selectedAllergies)
         }
-        const selectedCuisinesStr = Array.from(selectedCuisines).join(', ')
-        const selectedIngredientsStr = Array.from(selectedIngredients).join(', ')
-        const data = {messege: `ingredients: ${selectedIngredientsStr}. allergies: ${selectedAllergiesStr}. cuisine: ${selectedCuisinesStr}. create a json with parameters: 'dish name', 'items', 'procedure'. only code and no other text. give 3 dishes.`}
+        const selectedCuisinesArray = Array.from(selectedCuisines)
+        const selectedIngredientsArray = Array.from(selectedIngredients)
+        const data = {messege: {ingredients: selectedIngredientsArray, allergies: selectedAllergiesArray, cuisine: selectedCuisinesArray}}
         const body = JSON.stringify(data)
 
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://dietbuddy-zp0g.onrender.com/generate-recipe", true);
+        // "https://dietbuddy-zp0g.onrender.com/generate-recipe"
+        // "http://localhost:3000/generate-recipe"
+        xhr.open("POST", "http://localhost:3000/generate-recipe", true);
         xhr.setRequestHeader("Content-type","application/json");
         xhr.onload = () => {
         if (xhr.readyState == 4 && xhr.status == 200) {
             const response = xhr.responseText
             const parsedResponse = JSON.parse(response)
             const data = parsedResponse.data.content
+            // const data = parsedResponse.data
             console.log(data)
             const trimmedData = data.slice(8, -3);
             const recipes = JSON.parse(trimmedData);
@@ -647,8 +671,57 @@ function copyRecipe(recipe) {
     });
 }
 
+
+
+async function getSaved(id) {
+    const res = await fetch(`/data/${id}`);
+    let data = await res.json();
+    data = data.user_data;
+    const savedIngredients = data.selectedList.selectIngredients
+    const savedAllergies = data.selectedList.selectAllergies
+    const savedCuisines = data.selectedList.selectCuisines
+    const savedIngredientsArray = savedIngredients.split(",")
+    const savedAllergiesArray = savedAllergies.split(",")
+    const savedCuisinesArray = savedCuisines.split(",")
+
+    console.log(typeof savedCuisinesArray)
+
+    for (let ingredient in savedIngredientsArray){
+        selectIngredient(savedIngredientsArray[ingredient]);
+    }
+    if (savedAllergiesArray[0] != "none"){
+        for (let allergy in savedAllergiesArray){
+            selectAllergy(savedAllergiesArray[allergy]);
+        }
+    }
+
+    for (let cuisine in savedCuisinesArray){
+        selectCuisine(savedCuisinesArray[cuisine]);
+    }
+
+}
+
+getSaved(user_id);
+
+
+function showUploadPopup() {
+    document.getElementById("popup").style.display = "flex";
+}
+
+// Close popup
+function closeUploadPopup() {
+    document.getElementById("popup").style.display = "none";
+}
+
+// Placeholder function for the upload action
+function uploadImage() {
+    alert("Image upload functionality goes here!");
+}
+
+
+
+
 function bookmarkRecipe(recipeName) {
-    // In a real application, you would save this to local storage or a database
     alert(`${recipeName} has been bookmarked!`);
 }
 

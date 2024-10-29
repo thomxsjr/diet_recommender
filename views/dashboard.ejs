@@ -57,6 +57,18 @@
     </div>
 
     <div class="container">
+        <button onclick="showUploadPopup()" class="upload-btn">Get Ingregients From Image</button>
+    </div>
+
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <p>Upload image to recognise ingredients</p>
+            <button class="popup-btn" onclick="uploadImage()">Upload Image</button>
+            <button class="popup-btn popup-btn-close" onclick="closeUploadPopup()">Close</button>
+        </div>
+    </div>
+
+    <div class="container">
         <div class="allergies-section">
             <div class="available-allergies">
                 <div class="header-section">
@@ -68,7 +80,6 @@
                 </div>
                 <input type="text" class="search-box-allergies" placeholder="Search Allergies..." onkeyup="filterAllergies()">
                 <ul class="allergy-list" id="availableListAllergies">
-                    <!-- Ingredients will be populated by JavaScript -->
                 </ul>
                 <button class="show-more-btn" id="showMoreBtnAllergies" onclick="showMoreAllergies()">Show More Allergies</button>
             </div>
@@ -76,7 +87,6 @@
             <div class="selected-allergies">
                 <h2>Selected Allergies</h2>
                 <ul class="allergy-list" id="selectedListAllergies">
-                    <!-- Selected ingredients will appear here -->
                 </ul>
             </div>
         </div>
@@ -112,7 +122,10 @@
     </div>
     <div class="recipe-container" id="recipeContainer"></div>
     
-
+    <script >
+        
+        const user_id = "<%= locals.user_data.uid %>"
+    </script>
     <script src="/scripts/dashboard.js"></script>
 </body>
 </html>
