@@ -6,7 +6,8 @@ const { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithE
 const ejs = require('ejs');
 const axios = require('axios');
 const { OpenAI } = require('openai');
-
+const { getStorage, ref: storageRef, getDownloadURL, uploadBytesResumable } = require('firebase/storage')
+const { multer} = require('multer')
 
 
 const app = express();
@@ -23,10 +24,14 @@ const openai = new OpenAI({
     project: "proj_E5kuFZY4XEqbcK2Tvy9lsPlI",
     apiKey: process.env.OPEN_AI_KEY,
   });
-const firebaseConfig = require('./firebase_config.js')
+const firebaseConfig = require('./firebase_config.js');
+// const { default: firebase } = require('firebase/compat/app');
+// const { storage } = require('three/examples/jsm/nodes/Nodes.js');
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getDatabase(firebaseApp);
 const auth = getAuth(firebaseApp);
+const storage = getStorage();
+
 const port = process.env.PORT || 3000;
 
 
@@ -151,7 +156,7 @@ app.post('/generate-recipe', async (req, res)=>{
                     content: `${data} create a json with parameters: 'dish_name', 'items', 'procedure'. give 3 dishes. only code no other text.`,
                 },
             ],
-            max_tokens: 1000,
+            max_tokens: 3000,
             temperature: 1,
         })
         
@@ -172,9 +177,43 @@ app.post('/generate-recipe', async (req, res)=>{
     }
 })
 
-app.post('/ingredient-recognisation', (req, res)=>{
-    
-})
+// app.post("/ingredient-recognition", upload.single("filename"), async (req, res) => {
+//     try {
+
+//         const today = new Date();
+//         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+//         const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+//         const dateTime = date + ' ' + time;
+//         onAuthStateChanged(auth, async function(user) {
+//             const userID = user.uid;
+//             const storageRef = ref(storage, `files/${userID}/${req.file.originalname + "       " + dateTime}`);
+
+//             // Create file metadata including the content type
+//             const metadata = {
+//                 contentType: req.file.mimetype,
+//             };
+
+//             // Upload the file in the bucket storage
+//             const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata);
+//             //by using uploadBytesResumable we can control the progress of uploading like pause, resume, cancel
+
+//             // Grab the public url
+//             const downloadURL = await getDownloadURL(snapshot.ref);
+
+//             console.log('File successfully uploaded.');
+//             return res.send({
+//                 message: 'file uploaded to firebase storage',
+//                 name: req.file.originalname,
+//                 type: req.file.mimetype,
+//                 downloadURL: downloadURL
+//             })
+//         })
+//     } catch (error) {
+//         return res.status(400).send(error.message)
+//     }
+// });
+
+
 
 app.post('/signup',(req,res)=>{
     console.log(req.body);
